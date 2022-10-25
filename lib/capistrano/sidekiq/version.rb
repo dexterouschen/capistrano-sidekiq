@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Capistrano
-  SidekiqVERSION = '2.3.1'
+  SidekiqVERSION = '2.3.2'
 end
