@@ -201,12 +201,12 @@ namespace :sidekiq do
   end
 
   def try_systemctl_command(*args)
-    if git_plugin.config_per_process?
-      git_plugin.process_block do |process|
-        git_plugin.systemctl_command(command, process: process)
+    if config_per_process?
+      process_block do |process|
+        systemctl_command(command, process: process)
       end
     else
-      git_plugin.systemctl_command(command)
+      systemctl_command(command)
     end
   end
 
