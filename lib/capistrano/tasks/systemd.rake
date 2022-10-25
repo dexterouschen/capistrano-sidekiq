@@ -203,10 +203,10 @@ namespace :sidekiq do
   def try_systemctl_command(*args)
     if config_per_process?
       process_block do |process|
-        systemctl_command(command, process: process)
+        systemctl_command(*args, process: process)
       end
     else
-      systemctl_command(command)
+      systemctl_command(*args)
     end
   end
 
