@@ -46,6 +46,7 @@ ExecStart=<%= expanded_bundle_path %> exec sidekiq -e <%= fetch(:sidekiq_env) %>
 
 # Use `systemctl kill -s TSTP <%= sidekiq_service_unit_name %>` to quiet the Sidekiq process
 <%="User=#{sidekiq_user}" if sidekiq_user %>
+<%="Group=#{sidekiq_group}" if sidekiq_group %>
 UMask=0002
 
 <%="EnvironmentFile=#{File.join(fetch(:deploy_to), 'current')}/#{fetch(:sidekiq_service_unit_env_file)}" if fetch(:sidekiq_service_unit_env_file) %>

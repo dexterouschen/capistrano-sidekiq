@@ -240,6 +240,10 @@ namespace :sidekiq do
     fetch(:sidekiq_user, fetch(:run_as))
   end
 
+  def sidekiq_group
+    fetch(:sidekiq_group, fetch(:run_as))
+  end
+
   def sidekiq_config
     config = fetch(:sidekiq_config)
     return unless config
