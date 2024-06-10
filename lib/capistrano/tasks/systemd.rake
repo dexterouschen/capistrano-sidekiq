@@ -107,7 +107,7 @@ namespace :sidekiq do
         config_link_path = File.join(
           fetch(:deploy_to), 'shared', 'sidekiq_systemd', '*'
         )
-        execute :rm, config_link_path, raise_on_non_zero_exit: false
+        execute :rm, '-f', config_link_path, raise_on_non_zero_exit: false
         execute :sudo, :rm, '-f', File.join(
           fetch(:service_unit_path, git_plugin.fetch_systemd_unit_path),
           "#{fetch(:sidekiq_service_unit_name)}@*"
