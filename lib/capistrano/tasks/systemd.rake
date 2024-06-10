@@ -96,13 +96,17 @@ namespace :sidekiq do
   task :uninstall do
     on roles fetch(:sidekiq_roles) do |role|
       git_plugin.switch_user(role) do
-        git_plugin.try_systemctl_command(:stop)
-        git_plugin.try_systemctl_command(:disable)
-        if git_plugin.config_per_process?
-          git_plugin.process_block do |process|
-            git_plugin.delete_systemd_config_symlink(process)
-          end
+        commands = if fetch(:sidekiq_service_unit_user) == :system
+          %i[sudo systemctl]
+        else
+          [:systemctl, '--user']
         end
+        execute *commands, :stop, "'#{fetch(:sidekiq_service_unit_name)}@*'"
+        execute *commands, :disable, "'#{fetch(:sidekiq_service_unit_name)}@*'"
+        config_link_path = File.join(
+          fetch(:deploy_to), 'shared', 'sidekiq_systemd', '*'
+        )
+        execute :rm, config_link_path, raise_on_non_zero_exit: false
         execute :sudo, :rm, '-f', File.join(
           fetch(:service_unit_path, git_plugin.fetch_systemd_unit_path),
           "#{fetch(:sidekiq_service_unit_name)}@*"
