@@ -102,7 +102,7 @@ namespace :sidekiq do
           [:systemctl, '--user']
         end
         execute *commands, :stop, "'#{fetch(:sidekiq_service_unit_name)}@*'"
-        execute "find #{fetch(:service_unit_path, git_plugin.fetch_systemd_unit_path)} -maxdepth 1 -name '#{fetch(:sidekiq_service_unit_name)}@*' -type f -printf '%f\\n' | xargs #{commands.join(' ')} disable"
+        execute "find #{fetch(:service_unit_path, git_plugin.fetch_systemd_unit_path)} -maxdepth 1 -name '#{fetch(:sidekiq_service_unit_name)}@*' -type f -printf '%f\\n' | xargs -r #{commands.join(' ')} disable"
 
         config_link_path = File.join(
           fetch(:deploy_to), 'shared', 'sidekiq_systemd', '*'
